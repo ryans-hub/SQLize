@@ -1,9 +1,9 @@
 DROP DATABSE IF EXISTS employee_db;
-CREATE DATABASE
+CREATE DATABASE employee_db;
 
-USE
+USE employee_db;
 
 CREATE TABLE department (
-    id INT 
-    name VARCHAR(30) 
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+    name VARCHAR(30) NOT NULL
 )
