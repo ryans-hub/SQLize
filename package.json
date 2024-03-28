@@ -1,0 +1,18 @@
+{
+  "name": "sqlize",
+  "version": "1.0.0",
+  "description": "## Your Task",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "dotenv": "^16.4.5",
+    "inquirer": "^9.2.16",
+    "mysql2": "^3.9.3"
+  }
+}
