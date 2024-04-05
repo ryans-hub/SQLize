@@ -11,7 +11,6 @@ VALUES
     ("Accountant", 60000, 2),
     ("Product Specialist", 70000, 3),
     ("Sales Associate", 50000, 4),
-    ("Sales Vice President", 80000, 4),
     ("Sr. Software Engineer", 110000, 1),
     ("Financial Analyst", 68000, 2),
     ("Product Manager", 79000, 1),
