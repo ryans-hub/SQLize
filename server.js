@@ -283,6 +283,72 @@ const addEmployee = (answer) => {
 
 const updateRole = () => {
 
+    mysql.query('SELECT first_name, last_name FROM employee', function (err, results) {
+        if(err) {
+            console.error('Error fetching names', err);
+        }
+
+        const employeeNames = [];
+
+        for (const employee of results) {
+            employeeNames.push(`${employee.first_name} ${employee.last_name}`);
+        }
+        // console.log('Employees:', employeeNames);
+
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employee',
+                message: 'Select an employee to update:',
+                choices: employeeNames,
+            },
+            {
+                type: 'list',
+                name: 'roleName',
+                message: 'Enter the name of the new Role: ',
+                choices: ['Jr. Software Engineer',
+                'Accountant',
+                'Product Specialist',
+                'Sales Associate',
+                'Sr. Software Engineer',
+                'Financial Analyst',
+                'Product Manager',
+                'Marketing Manager'],
+            },
+        ])
+        .then((response) => {
+            const employeeName = response.employee;
+            const roleName = response.roleName;
+
+            // console.log('employee', employeeName);
+            // console.log('role name', roleName);
+
+            mysql.query('SELECT id FROM role WHERE title =?', [roleName], (err, roleResults) => {
+                if (err) {
+                    console.error('Error fetching role ID:', err);
+                    return;
+                }
+            
+                if (roleResults.length === 0) {
+                    console.error('No role found with the given title');
+                    return;
+                }
+            
+                const roleId = roleResults[0].id;
+            
+                mysql.query('UPDATE employee SET role_id = ? WHERE first_name = ? AND last_name = ?', [roleId, employeeName.split(' ')[0], employeeName.split(' ')[1]], (err, updateResults) => {
+                    if (err) {
+                        console.error('Error updating employee role', err);
+                        return;
+                    }
+            
+                    console.log(`Employee ${employeeName}'s role updated successfully`)
+                    viewEmployees();
+                });
+            });
+            
+        });
+    });
 }
 
 const showList = () => {
