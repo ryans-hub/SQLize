@@ -25,8 +25,18 @@ const addNewQuestion = (menuChoice) => {
             return [
                 {
                     type: 'input',
-                    name: 'addRole',
+                    name: 'roleName',
                     message: 'Enter the name of the new Role: ',
+                },
+                {
+                    type: 'input',
+                    name: 'roleSalary',
+                    message: 'Enter the salary of the new Role:',
+                },
+                {
+                    type: 'input',
+                    name: 'roleDepartment',
+                    message: 'Enter the name of the department for the new Role:',
                 }
             ];
         case 'Add an Employee':
@@ -52,7 +62,10 @@ const listOptions = (response)=>{
             viewEmployees();
             break;
         case 'Add a Department':
-            addDepartment();
+            inquirer.prompt(addNewQuestion(response.menuChoice)).then((answer) => {
+                addDepartment(answer);
+
+            })
             break;
         case 'Add a Role':
             addRole();
@@ -132,8 +145,26 @@ const viewEmployees = () => {
         });
     }
 
-const addDepartment = () => {
+const addDepartment = (answer) => {
 
+    const departmentName = answer.addDepartment; 
+    // console.log(departmentName);
+
+    mysql.query('INSERT INTO department SET ?', {name: departmentName}, function (err, results) {
+        if(err) {
+            console.error('Error adding department:', err);
+            return;
+        } else {
+            mysql.query('SELECT * FROM department', function (err, results) {
+                if (err) {
+                    console.error('Error fetching departments:', err);
+                    return;
+                }
+                console.log(`Department ${departmentName} added successfully.`)
+                console.table(results);
+            });
+        } 
+    });
 }
 
 const addRole = () => {
