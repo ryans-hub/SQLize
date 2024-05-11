@@ -44,9 +44,36 @@ const addNewQuestion = (menuChoice) => {
             return [
                 {
                     type: 'input',
-                    name: 'addRole',
-                    message: 'Enter the name of the new Employee: ',
-                }
+                    name: 'firstName',
+                    message: 'Enter the first name of the new Employee: ',
+                },
+                {
+                    type: 'input',
+                    name: 'lastName',
+                    message: 'Enter the last name of the new Employee: ',
+                },
+                {
+                    type: 'input',
+                    name: 'roleName',
+                    message: 'Enter the name of the new Role: ',
+                },
+                {
+                    type: 'input',
+                    name: 'roleSalary',
+                    message: 'Enter the salary of the new Role:',
+                },
+                {
+                    type: 'list',
+                    name: 'roleDepartment',
+                    message: 'Choose the name of the department for the new Role:',
+                    choices: ['Engineering', 'Finance', 'Marketing', 'Sales'],
+                }, 
+                {
+                    type: 'list',
+                    name: 'manager',
+                    message: 'Choose the name of the manager for the new Employee:',
+                    choices: ['Michael Scott', 'Dwight Schrute'],
+                },
             ];
     }
 }
@@ -73,7 +100,9 @@ const listOptions = (response)=>{
             })
             break;
         case 'Add an Employee':
-            addEmployee();
+            inquirer.prompt(addNewQuestion(response.menuChoice)).then((answer) => {
+                addEmployee(answer);
+            })
             break;
         case 'Update an Employee Role':
             updateRole();
@@ -167,6 +196,8 @@ const addDepartment = (answer) => {
             });
         } 
     });
+
+    showList();
 }
 
 const addRole = (answer) => {
@@ -184,7 +215,6 @@ const addRole = (answer) => {
             return;
         }
 
-        // Assuming there's a single department with the given name
         const departmentId = results[0].id;
 
 
@@ -199,11 +229,57 @@ const addRole = (answer) => {
     })
 })
 
-}
-
-const addEmployee = () => {
+showList();
 
 }
+
+const addEmployee = (answer) => {
+    const firstName = answer.firstName;
+    const lastName = answer.lastName;
+    const manager = answer.manager;
+    const roleName = answer.roleName;
+    const roleSalary = answer.roleSalary;
+    const roleDepartment = answer.roleDepartment;
+
+    mysql.query('SELECT id FROM department WHERE name = ?', [roleDepartment], (err, departmentResults) => {
+        if (err) {
+            console.error('Error fetching department ID:', err);
+            return;
+        }
+
+        const departmentId = departmentResults[0].id;
+
+       mysql.query('INSERT INTO role SET ?', { title: roleName, salary: roleSalary, department_id: departmentId }, (err, roleResults) => {
+            if (err) {
+                console.error('Error adding new role:', err);
+                return;
+            }
+
+            const roleId = roleResults.insertId;
+
+            mysql.query('SELECT id FROM employee WHERE first_name = ? AND last_name = ?', [manager.split(' ')[0], manager.split(' ')[1]], (err, managerResults) => {
+                if (err) {
+                    console.error('Error fetching manager ID:', err);
+                    return;
+                }
+
+                const managerId = managerResults[0].id;
+
+                mysql.query('INSERT INTO employee SET ?', { first_name: firstName, last_name: lastName, role_id: roleId, manager_id: managerId }, (err, employeeResults) => {
+                    if (err) {
+                        console.error('Error adding new employee:', err);
+                        return;
+                    }
+
+                    console.log(`Employee ${firstName} ${lastName} added successfully!`);
+                    viewEmployees();
+                    showList(); // Return to the main menu
+                });
+            });
+        });
+    });
+};
+
 
 const updateRole = () => {
 
