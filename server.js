@@ -11,11 +11,34 @@ const menuQuestion = [
 ]
 
 
-const addnewquestion = [
-    {
-
+const addNewQuestion = (menuChoice) => {
+    switch(menuChoice) {
+        case 'Add a Department':
+            return [
+                {
+                    type: 'input',
+                    name: 'addDepartment',
+                    message: 'Enter the name of the new Department: ',
+                }
+            ];
+        case 'Add a Role':
+            return [
+                {
+                    type: 'input',
+                    name: 'addRole',
+                    message: 'Enter the name of the new Role: ',
+                }
+            ];
+        case 'Add an Employee':
+            return [
+                {
+                    type: 'input',
+                    name: 'addRole',
+                    message: 'Enter the name of the new Employee: ',
+                }
+            ];
     }
-]
+}
 
 const listOptions = (response)=>{
     switch(response.menuChoice){
@@ -27,6 +50,18 @@ const listOptions = (response)=>{
             break;
         case 'View All Employees':
             viewEmployees();
+            break;
+        case 'Add a Department':
+            addDepartment();
+            break;
+        case 'Add a Role':
+            addRole();
+            break;
+        case 'Add an Employee':
+            addEmployee();
+            break;
+        case 'Update an Employee Role':
+            updateRole();
             break;
         case 'Quit':
             mysql.end();
@@ -96,9 +131,21 @@ const viewEmployees = () => {
             showList();
         });
     }
-    
 
+const addDepartment = () => {
 
+}
+
+const addRole = () => {
+
+}
+const addEmployee = () => {
+
+}
+
+const updateRole = () => {
+
+}
 
 const showList = () => {
     inquirer
