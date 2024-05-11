@@ -34,9 +34,10 @@ const addNewQuestion = (menuChoice) => {
                     message: 'Enter the salary of the new Role:',
                 },
                 {
-                    type: 'input',
+                    type: 'list',
                     name: 'roleDepartment',
-                    message: 'Enter the name of the department for the new Role:',
+                    message: 'Choose the name of the department for the new Role:',
+                    choices: ['Engineering', 'Finance', 'Marketing', 'Sales'],
                 }
             ];
         case 'Add an Employee':
@@ -64,11 +65,12 @@ const listOptions = (response)=>{
         case 'Add a Department':
             inquirer.prompt(addNewQuestion(response.menuChoice)).then((answer) => {
                 addDepartment(answer);
-
             })
             break;
         case 'Add a Role':
-            addRole();
+            inquirer.prompt(addNewQuestion(response.menuChoice)).then((answer) =>{
+                addRole(answer);
+            })
             break;
         case 'Add an Employee':
             addEmployee();
@@ -160,16 +162,45 @@ const addDepartment = (answer) => {
                     console.error('Error fetching departments:', err);
                     return;
                 }
-                console.log(`Department ${departmentName} added successfully.`)
+                console.log(`New department ${departmentName} added successfully.`)
                 console.table(results);
             });
         } 
     });
 }
 
-const addRole = () => {
+const addRole = (answer) => {
+
+    const roleName = answer.roleName;
+    // console.log('New role name:', roleName);
+    const roleSalary = answer.roleSalary;
+    // console.log('New Role salary:', roleSalary);
+    const roleDepartment = answer.roleDepartment;
+    // console.log('New role department:', roleDepartment);
+
+    mysql.query('SELECT id FROM department WHERE name = ?', [roleDepartment], (err, results) => {
+        if (err) {
+            console.error('Error fetching department ID:', err);
+            return;
+        }
+
+        // Assuming there's a single department with the given name
+        const departmentId = results[0].id;
+
+
+    mysql.query('INSERT INTO role SET ?', {title: roleName, salary: roleSalary, department_id: departmentId}, (err, results) => {
+        if(err) {
+            console.log('Error adding new role', err);
+            return;
+        } else {
+            console.log(`New role ${roleName} added successfully!`)
+            viewRoles();
+        }
+    })
+})
 
 }
+
 const addEmployee = () => {
 
 }
