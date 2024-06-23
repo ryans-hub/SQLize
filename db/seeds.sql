@@ -27,11 +27,11 @@ VALUES
     ("Kevin", "Malone", 7, 2),
     ("Angela", "Martin", 8, 2),
     ("Oscar", "Martinez", 7, 2),
-    ("Meredith", "Palmer", 8, 3),
-    ("Phyllis", "Vance", 3, 3),
-    ("Stanley", "Hudson", 4, 4),
+    ("Meredith", "Palmer", 8, 1),
+    ("Phyllis", "Vance", 3, 2),
+    ("Stanley", "Hudson", 4, 1),
     ("Andy", "Bernard", 3, 2),
-    ("Toby", "Flenderson", 4, 4),
+    ("Toby", "Flenderson", 4, 1),
     ("Ryan", "Howard", 7, 1);
 
 
