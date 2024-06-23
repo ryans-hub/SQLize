@@ -357,5 +357,8 @@ const showList = () => {
         .then((response)=>listOptions(response))
 }
 
-showList();
+const init = () => {
+    showList();
+  };
+  init();
 
