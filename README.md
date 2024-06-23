@@ -4,13 +4,6 @@
 
 This is a command line application that uses SQL to track employee's in a database.
 
-## Table of Contents
-- [Usage](#usage)
-- [License](#license)
-- [Contributing](#contributing)
-- [Tests](#tests)
-- [Questions](#questions)
-
 ## Usage
 
 Employee management DATABASE
