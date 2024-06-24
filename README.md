@@ -8,13 +8,9 @@ This is a command line application that uses SQL to track employee's in a databa
 
 Employee management DATABASE
 
-## ScreenShot
-
-![Screenshot](./Assets/examplepic.png)
-
 ## Demonstration
 
-![ExampleVid](./Assets/EmployeeTrackerExample.mkv)
+https://drive.google.com/file/d/1SFQOV07zuFzp35WvPAsscpykkFB1NeSX/preview
 
 
 
